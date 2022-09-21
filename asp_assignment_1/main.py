@@ -2,6 +2,9 @@ from maker import Maker
 from concurrent import Concurrent,Checker
 import time
 def main():
+    
+    
+    #INTERFACE SYSTEM FOR THE PROGRAM
     print("Welcome to my Large CSV File Uploader\n\n")
     input_string=input('Specify the number of rows in the csv file (15,000 rows is approximately 1 MB of data)\n')
     try:
