@@ -2,6 +2,9 @@ import pandas
 import random
 from pathlib import Path
 import os
+
+#THIS IS WHERE ALL THE DATA IS CREATED AND INSERTED INTO THE CSV FILE
+
 class Maker:
     def __init__(self,amt):
         self.df=self.make_df(amt)
