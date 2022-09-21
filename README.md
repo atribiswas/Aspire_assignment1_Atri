@@ -1,5 +1,13 @@
 ## Assignment sub-1
-Please find the following assignment.
+Please find the following assignment submission for 1st half of Aspire Assignment by Atri Biswas.
+
+**Requirements for the assignment-**
+- concurrent inserts (2k)
+- use any mysql connector
+- insert 5gb csv file
+- focus- exec time
+- 5 columns
+
 
 **Instructions-**
  1. install requirements
