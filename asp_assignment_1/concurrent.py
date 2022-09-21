@@ -3,6 +3,8 @@ import mysql.connector
 from datetime import datetime,timedelta
 import pandas as pd
 
+
+#CHECKER CLASS USED TO CHECK IF DB CONNECTION IS VALID
 class Checker:
     @staticmethod
     def check_connection(**kwargs):
@@ -19,7 +21,8 @@ class Checker:
         except Exception as e:
             print("Bad Connection. Try Again- %s"%e)
             return False
-
+        
+#CONCURRENT CLASS CREATES AND OBJECT TO CREATE CONCURRENT INSERTS INTO REGISTERED DATABASE
 
 class Concurrent:
     def __init__(self,end=1000,cs=1000, **kwargs) -> None:
@@ -30,11 +33,8 @@ class Concurrent:
                 self.allitems=True
         else:
             self.allitems=False
-    #     self.csv_data=self.make_file()
-    #     print("imported")
-    # def make_file(self):
-    #     myfile=open("csv_uploader\conc_uploads\csv_maker\csv_repo\out.csv")
-    #     return pd.read_csv(myfile, chunksize=10000).tolist()
+    
+    #BELOW FUNCTION CHECK IF THE TEST TABLE EXISTS IN THE GIVEN DATABASE AND RETURNS FALSE IF IT DOESN'T
     
     def checkTableExists(self,dbcon, tablename):
         print("Checking for existence of table- ",tablename)
@@ -49,6 +49,8 @@ class Concurrent:
         return False
 
 
+    #THIS FUNCTION IS USED TO CREATE TEST TABLE IN DATABASE IF NO SUCH TABLE ALREADY EXISTS
+    
     def makeTable(self,dbcon):
         cursor=dbcon.cursor()
         cursor.execute(
@@ -68,7 +70,8 @@ class Concurrent:
            " ) ENGINE=InnoDB AUTO_INCREMENT=25001 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci"
             )
         
-
+    
+    #THIS CORE FUNCTION CREATES THE CONNECTION, CALLS THE CHECKERS AND CREATES THE INSERT QUERY AND VALUES FROM THE CSV IN O(N) TIME.
 
     def make_concurrent(self,**kwargs):
         db = mysql.connector.connect(
@@ -94,6 +97,9 @@ class Concurrent:
         flag=False
         fileObject=open('emp.csv')
         row_count = sum(1 for row in fileObject)
+        
+        
+        #EVEN THOUGH THIS LOOKS LIKE O(N^2) TIME, IT'S BASICALLY O(A*B) COMPLEXITY WHERE N=A*B BECAUSE OF CHUNKING FEATURE OF PANDAS
         for df in pd.read_csv('emp.csv', iterator=True, chunksize=self.cs):
             rows=df.values.tolist()
             for row in rows:
